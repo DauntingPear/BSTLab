@@ -1,6 +1,7 @@
 
 public class BST implements BSTInterface<Node> {
     private Node rootNode = null;
+    private int size = 0;
 
     public int getRoot() {
         if (rootNode != null) {
@@ -37,16 +38,11 @@ public class BST implements BSTInterface<Node> {
                 }
             }
         }
+        size++;
     }
 
     public void printBSTInOrder(Node n) {
-        if (n == null) {
-            return;
-        }
-
-        printBSTInOrder(n.getLeftChild());
-        System.out.println(n.getData());
-        printBSTInOrder(n.getRightChild());
+        return;
     }
 
     public void remove(Node n) {
@@ -55,8 +51,9 @@ public class BST implements BSTInterface<Node> {
 
         while (currNode != null) {
             if (currNode.getData() == n.getData()) {
+                // Remove leaf node
                 if (currNode.getLeftChild() == null && currNode.getRightChild() == null) {
-                    if (parNode == null) {
+                    if (parNode == null) { // Node is root
                         this.rootNode = null;
                     }
                     else if (parNode.getLeftChild() == currNode) {
@@ -66,8 +63,9 @@ public class BST implements BSTInterface<Node> {
                         parNode.setRightChild(null);
                     }
                 }
+                // Remove node with only left child
                 else if (currNode.getRightChild() == null) {
-                    if (parNode == null) {
+                    if (parNode == null) { // Node is root
                         this.rootNode = currNode.getLeftChild();
                     }
                     else if (parNode.getLeftChild() == currNode) {
@@ -77,27 +75,42 @@ public class BST implements BSTInterface<Node> {
                         parNode.setRightChild(currNode.getLeftChild());
                     }
                 }
+                // Remove node with only right child
+                else if (currNode.getLeftChild() == null) {
+                    if (parNode == null) { // Node is root
+                        rootNode = currNode.getRightChild();
+                    }
+                    else if (parNode.getLeftChild() == currNode) {
+                        parNode.setLeftChild(currNode.getRightChild());
+                    }
+                    else {
+                        parNode.setRightChild(currNode.getLeftChild());
+                    }
+                }
+                // Remove node with two children
                 else {
+                    // Find successor (leftmost child of subtree)
                     Node sucNode = currNode.getRightChild();
                     while (sucNode.getLeftChild() != null) {
                         sucNode = sucNode.getLeftChild();
                     }
                     int sucData = sucNode.getData();
-                    remove(sucNode);
+                    remove(sucNode); // Remove successor
                     currNode.setData(sucData);
                 }
-                return;
+                size--;
+                return; // Node found and removed
             }
-            else if (currNode.getData() < n.getData()) {
+            else if (currNode.getData() < n.getData()) { // Search right
                 parNode = currNode;
                 currNode = currNode.getRightChild();
             }
-            else {
+            else { // Search left
                 parNode = currNode;
                 currNode = currNode.getLeftChild();
             }
         }
-        return;
+        return; // Node not found
     }
 
     public void find(Node n) {
