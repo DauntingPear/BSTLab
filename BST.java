@@ -137,7 +137,7 @@ public class BST implements BSTInterface<Node> {
         Node currNode = rootNode;
         while (currNode != null) {
             if (n.getData() == currNode.getData()) {
-                return; //Currnode is found
+                System.out.println("Node found.");
             }
             else if (n.getData() < currNode.getData()) {
                 currNode = currNode.getLeftChild();
@@ -146,6 +146,6 @@ public class BST implements BSTInterface<Node> {
                 currNode = currNode.getRightChild();
             }
         }
-        return; // nothing found
+        System.out.println("Node Not found.");
     }
 }
