@@ -1,3 +1,4 @@
+import java.util.Stack;
 
 public class BST implements BSTInterface<Node> {
     private Node rootNode = null;
@@ -41,8 +42,27 @@ public class BST implements BSTInterface<Node> {
         size++;
     }
 
-    public void printBSTInOrder(Node n) {
-        return;
+    public void printBSTInOrder() {
+        if (rootNode == null) {
+            return;
+        }
+
+        Stack<Node> stack = new Stack<>();
+        Node currNode = rootNode;
+
+        while (currNode != null || stack.size() > 0) {
+            while (currNode != null) {
+                stack.push(currNode);
+                currNode = currNode.getLeftChild();
+            }
+
+            currNode = stack.pop();
+
+            System.out.println(currNode.getData());
+
+            currNode = currNode.getRightChild();
+        }
+
     }
 
     public void remove(Node n) {
